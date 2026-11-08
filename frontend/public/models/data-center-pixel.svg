@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="104" viewBox="0 0 144 104" fill="none" shape-rendering="crispEdges">
+  <title>Pixel art data center with server racks, rooftop cooling and power equipment</title>
+  <!-- Wide industrial server hall, flat colors and the meadow's pixel grid. -->
+  <path d="M14 88H130V90H136V94H128V96H16V94H8V90H14Z" fill="#91B27A"/>
+  <!-- Three rooftop cooling modules with blocky intake fans. -->
+  <path d="M24 29V15H28V11H42V15H46V29Z" fill="#E1D8F0"/>
+  <path d="M28 15H42V27H28Z" fill="#B3D4E4"/>
+  <path d="M32 15H38V17H42V23H38V27H32V23H28V17H32Z" fill="#65509C"/>
+  <path d="M34 17H36V25H34ZM30 20H40V22H30Z" fill="#CDB9DD"/>
+  <path d="M26 27H44V31H26Z" fill="#9580D4"/>
+  <path d="M50 29V15H54V11H68V15H72V29Z" fill="#E1D8F0"/>
+  <path d="M54 15H68V27H54Z" fill="#B3D4E4"/>
+  <path d="M58 15H64V17H68V23H64V27H58V23H54V17H58Z" fill="#65509C"/>
+  <path d="M60 17H62V25H60ZM56 20H66V22H56Z" fill="#CDB9DD"/>
+  <path d="M52 27H70V31H52Z" fill="#9580D4"/>
+  <path d="M76 29V15H80V11H94V15H98V29Z" fill="#E1D8F0"/>
+  <path d="M80 15H94V27H80Z" fill="#B3D4E4"/>
+  <path d="M84 15H90V17H94V23H90V27H84V23H80V17H84Z" fill="#65509C"/>
+  <path d="M86 17H88V25H86ZM82 20H92V22H82Z" fill="#CDB9DD"/>
+  <path d="M78 27H96V31H78Z" fill="#9580D4"/>
+  <!-- Solid walls, deep roof cap and a service wing, not an office facade. -->
+  <path d="M14 35H104V87H14ZM102 45H132V87H102Z" fill="#F4F7EA"/>
+  <path d="M10 29H108V35H10ZM102 39H136V45H102Z" fill="#9580D4"/>
+  <path d="M14 27H104V29H14ZM104 37H132V39H104Z" fill="#E1D8F0"/>
+  <path d="M14 35H104V39H14ZM102 45H132V49H102Z" fill="#CDB9DD"/>
+  <path d="M14 83H132V89H14Z" fill="#CDB9DD"/>
+  <!-- Continuous ventilation louvers across the hall. -->
+  <path d="M20 41H98V45H20Z" fill="#B3D4E4"/>
+  <path d="M22 41H24V45H22Z" fill="#9580D4"/>
+  <path d="M28 41H30V45H28Z" fill="#9580D4"/>
+  <path d="M34 41H36V45H34Z" fill="#9580D4"/>
+  <path d="M40 41H42V45H40Z" fill="#9580D4"/>
+  <path d="M46 41H48V45H46Z" fill="#9580D4"/>
+  <path d="M52 41H54V45H52Z" fill="#9580D4"/>
+  <path d="M58 41H60V45H58Z" fill="#9580D4"/>
+  <path d="M64 41H66V45H64Z" fill="#9580D4"/>
+  <path d="M70 41H72V45H70Z" fill="#9580D4"/>
+  <path d="M76 41H78V45H76Z" fill="#9580D4"/>
+  <path d="M82 41H84V45H82Z" fill="#9580D4"/>
+  <path d="M88 41H90V45H88Z" fill="#9580D4"/>
+  <path d="M94 41H96V45H94Z" fill="#9580D4"/>
+  <!-- One broad equipment bay with four full-height server cabinets. -->
+  <path d="M20 49H98V79H20Z" fill="#B3D4E4"/>
+  <path d="M20 79H98V81H20Z" fill="#E1D8F0"/>
+  <path d="M24 51H38V77H24Z" fill="#65509C"/>
+  <path d="M26 53H36V55H26Z" fill="#9580D4"/>
+  <path d="M34 53H36V55H34Z" fill="#B3D4E4"/>
+  <path d="M26 57H36V59H26Z" fill="#9580D4"/>
+  <path d="M34 57H36V59H34Z" fill="#D4E7A8"/>
+  <path d="M26 61H36V63H26Z" fill="#9580D4"/>
+  <path d="M34 61H36V63H34Z" fill="#D4E7A8"/>
+  <path d="M26 65H36V67H26Z" fill="#9580D4"/>
+  <path d="M34 65H36V67H34Z" fill="#B3D4E4"/>
+  <path d="M26 69H36V71H26Z" fill="#9580D4"/>
+  <path d="M34 69H36V71H34Z" fill="#D4E7A8"/>
+  <path d="M26 73H36V75H26Z" fill="#9580D4"/>
+  <path d="M34 73H36V75H34Z" fill="#D4E7A8"/>
+  <path d="M42 51H56V77H42Z" fill="#65509C"/>
+  <path d="M44 53H54V55H44Z" fill="#9580D4"/>
+  <path d="M52 53H54V55H52Z" fill="#D4E7A8"/>
+  <path d="M44 57H54V59H44Z" fill="#9580D4"/>
+  <path d="M52 57H54V59H52Z" fill="#D4E7A8"/>
+  <path d="M44 61H54V63H44Z" fill="#9580D4"/>
+  <path d="M52 61H54V63H52Z" fill="#B3D4E4"/>
+  <path d="M44 65H54V67H44Z" fill="#9580D4"/>
+  <path d="M52 65H54V67H52Z" fill="#D4E7A8"/>
+  <path d="M44 69H54V71H44Z" fill="#9580D4"/>
+  <path d="M52 69H54V71H52Z" fill="#D4E7A8"/>
+  <path d="M44 73H54V75H44Z" fill="#9580D4"/>
+  <path d="M52 73H54V75H52Z" fill="#B3D4E4"/>
+  <path d="M60 51H74V77H60Z" fill="#65509C"/>
+  <path d="M62 53H72V55H62Z" fill="#9580D4"/>
+  <path d="M70 53H72V55H70Z" fill="#D4E7A8"/>
+  <path d="M62 57H72V59H62Z" fill="#9580D4"/>
+  <path d="M70 57H72V59H70Z" fill="#B3D4E4"/>
+  <path d="M62 61H72V63H62Z" fill="#9580D4"/>
+  <path d="M70 61H72V63H70Z" fill="#D4E7A8"/>
+  <path d="M62 65H72V67H62Z" fill="#9580D4"/>
+  <path d="M70 65H72V67H70Z" fill="#D4E7A8"/>
+  <path d="M62 69H72V71H62Z" fill="#9580D4"/>
+  <path d="M70 69H72V71H70Z" fill="#B3D4E4"/>
+  <path d="M62 73H72V75H62Z" fill="#9580D4"/>
+  <path d="M70 73H72V75H70Z" fill="#D4E7A8"/>
+  <path d="M78 51H92V77H78Z" fill="#65509C"/>
+  <path d="M80 53H90V55H80Z" fill="#9580D4"/>
+  <path d="M88 53H90V55H88Z" fill="#B3D4E4"/>
+  <path d="M80 57H90V59H80Z" fill="#9580D4"/>
+  <path d="M88 57H90V59H88Z" fill="#D4E7A8"/>
+  <path d="M80 61H90V63H80Z" fill="#9580D4"/>
+  <path d="M88 61H90V63H88Z" fill="#D4E7A8"/>
+  <path d="M80 65H90V67H80Z" fill="#9580D4"/>
+  <path d="M88 65H90V67H88Z" fill="#B3D4E4"/>
+  <path d="M80 69H90V71H80Z" fill="#9580D4"/>
+  <path d="M88 69H90V71H88Z" fill="#D4E7A8"/>
+  <path d="M80 73H90V75H80Z" fill="#9580D4"/>
+  <path d="M88 73H90V75H88Z" fill="#D4E7A8"/>
+  <!-- Security entry, card reader and slim utility conduits. -->
+  <path d="M106 57H120V85H106Z" fill="#E1D8F0"/>
+  <path d="M108 59H118V85H108Z" fill="#B3D4E4"/>
+  <path d="M110 61H116V67H110Z" fill="#65509C"/>
+  <path d="M114 75H116V77H114Z" fill="#9580D4"/>
+  <path d="M122 63H126V69H122Z" fill="#65509C"/>
+  <path d="M123 64H125V66H123Z" fill="#D4E7A8"/>
+  <path d="M104 53H122V57H104Z" fill="#9580D4"/>
+  <path d="M108 89H120V91H108Z" fill="#F4F7EA"/>
+  <path d="M124 27H126V37H124ZM128 29H130V37H128Z" fill="#CDB9DD"/>
+  <path d="M120 25H126V27H120ZM124 27H130V29H124Z" fill="#CDB9DD"/>
+  <!-- Standalone backup power cabinet and exterior cooling unit. -->
+  <path d="M4 73H18V89H4Z" fill="#E1D8F0"/>
+  <path d="M2 71H20V75H2Z" fill="#9580D4"/>
+  <path d="M6 77H16V79H6ZM6 81H16V83H6ZM6 85H16V87H6Z" fill="#B3D4E4"/>
+  <path d="M126 73H140V89H126Z" fill="#E1D8F0"/>
+  <path d="M130 75H136V77H138V83H136V85H130V83H128V77H130Z" fill="#9580D4"/>
+  <path d="M132 77H134V83H132ZM130 79H136V81H130Z" fill="#B3D4E4"/>
+  <path d="M126 87H140V89H126Z" fill="#CDB9DD"/>
+  <!-- Meadow grasses soften the footprint. -->
+  <path d="M20 89H24V87H30V89H34V93H20ZM118 91H122V89H128V91H132V95H118Z" fill="#A8CE8A"/>
+  <path d="M8 95H10V99H8ZM36 93H38V97H36ZM112 95H114V99H112ZM138 93H140V97H138Z" fill="#95BC77"/>
+</svg>

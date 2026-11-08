@@ -1,15 +1,36 @@
+# Environment variables
 .env
 .env.*
 !.env.example
 **/.env
 **/.env.*
 !**/.env.example
+
+# Frontend (Next.js)
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# Backend (Python)
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .venv/
+
+# Machine learning models
 backend/data/models/*
 !backend/data/models/.gitkeep
+
+# macOS
+.DS_Store
+
+# Firmware
+.pio/
+firmware/esp32/include/config.h
+firmware/pico/config.py
 
 # Claude Code
 CLAUDE.md

@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="144" viewBox="0 0 240 144" fill="none" shape-rendering="crispEdges">
+  <title>Pixel art data center campus</title>
+  <desc>Two sage-gray server halls with lavender roof trim and silver vented roofs, a glass entrance between them, loading bays, and a flower-lined forecourt with parking.</desc>
+  <defs>
+    <pattern id="cladding" width="4" height="4" patternUnits="userSpaceOnUse">
+      <path fill="#939F98" d="M0 0H4V4H0Z"/>
+      <path fill="#87958D" d="M3 0H4V4H3Z"/>
+    </pattern>
+    <g id="vent">
+      <path fill="#7D8888" d="M0 0H9V3H0Z"/>
+      <path fill="#EEF0E5" d="M1 0H8V1H1Z"/>
+      <path fill="#BCC6C1" d="M1 1H8V2H1Z"/>
+    </g>
+    <g id="window">
+      <path fill="#222F32" d="M0 0H10V12H0Z"/>
+      <path fill="#95B5B3" d="M1 1H9V10H1Z"/>
+      <path fill="#C9D9CC" d="M1 1H4V5H1Z"/>
+      <path stroke="#4A6061" d="M5 1V10M1 6H9"/>
+    </g>
+    <g id="tree">
+      <path fill="#687762" d="M5 12H7V22H5Z"/>
+      <path fill="#507C5D" d="M2 6H10V16H2ZM0 9H12V13H0Z"/>
+      <path fill="#72A36B" d="M3 2H9V13H3ZM1 6H10V10H1Z"/>
+      <path fill="#91B97C" d="M3 4H5V9H3Z"/>
+    </g>
+    <g id="car">
+      <path fill="#505E5C" d="M0 3H15V9H0Z"/>
+      <path fill="#DBE0D7" d="M1 2H14V8H1ZM4 0H11V3H4Z"/>
+      <path fill="#66858B" d="M5 1H10V3H5Z"/>
+      <path fill="#344245" d="M2 7H5V10H2ZM10 7H13V10H10Z"/>
+      <path fill="#FAF4D6" d="M12 4H14V6H12Z"/>
+    </g>
+  </defs>
+
+  <!-- Stepped shadows and a compact campus forecourt. -->
+  <path fill="#91B7A1" d="M15 101H223V127H15ZM23 127H215V131H23Z"/>
+  <path fill="#D3D6BF" d="M13 100H225V123H13Z"/>
+  <path fill="#7E8986" d="M16 103H222V121H16Z"/>
+  <path fill="#65746E" d="M26 103H216V106H26Z"/>
+  <path fill="#DBDEC8" d="M26 106V115M42 106V115M58 106V115M74 106V115M164 106V115M180 106V115M196 106V115M212 106V115" stroke="#D2DAC8"/>
+  <path fill="#91B7A1" d="M17 119H85V124H17ZM154 119H222V124H154Z"/>
+  <path fill="#E5DFC8" d="M100 99H132V106H126V124H108V106H100Z"/>
+  <path fill="#C2C8B4" d="M100 103H132V105H100ZM108 114H126V115H108Z"/>
+
+  <!-- Recessed connector with a glazed, two-storey entrance. -->
+  <path fill="#596565" d="M88 51H143V102H88Z"/>
+  <path fill="#737F7C" d="M88 47H143V52H88Z"/>
+  <path fill="#C7CEC2" d="M89 47H142V49H89Z"/>
+  <path fill="#293C3E" d="M98 58H132V68H98Z"/>
+  <path fill="#769A9C" d="M100 60H130V66H100Z"/>
+  <path fill="#8EB0AD" d="M101 60H109V61H101Z"/>
+  <path fill="#253638" d="M102 73H130V102H102Z"/>
+  <path fill="#A5C1B9" d="M104 75H128V88H104Z"/>
+  <path fill="#D6E1CB" d="M105 76H114V80H105Z"/>
+  <path fill="#87ABA5" d="M104 90H128V101H104Z"/>
+  <path stroke="#3B5151" stroke-width="2" d="M110 75V88M121 75V88M104 82H128M116 90V102"/>
+  <path fill="#BFCFC1" d="M114 94H115V98H114ZM118 94H119V98H118Z"/>
+  <path fill="#BCC8BD" d="M99 88H133V90H99Z"/>
+  <path fill="#3C5050" d="M99 90H133V92H99Z"/>
+
+  <!-- Left hall: roof depth, metal coping and fine vertical cladding. -->
+  <path fill="#626E6B" d="M16 45L27 28H95V92L88 102H16Z"/>
+  <path fill="url(#cladding)" d="M16 45H88V101H16Z"/>
+  <path fill="#707D78" d="M88 45L95 29V92L88 101Z"/>
+  <path fill="#555365" d="M14 44L26 26H96L90 46H14Z"/>
+  <path fill="#AEBAB1" d="M18 42L28 29H92L87 42Z"/>
+  <path fill="#C8D0C1" d="M28 29H92L91 31H28Z"/>
+  <path fill="#DAD4E5" d="M15 43H89V45H15Z"/>
+  <path fill="#494858" d="M15 45H89V48H15Z"/>
+  <path stroke="#9CAAA1" d="M31 32H90M28 36H88M25 40H87"/>
+  <use href="#vent" x="38" y="31"/><use href="#vent" x="35" y="36"/>
+  <use href="#vent" x="65" y="31"/><use href="#vent" x="62" y="36"/>
+  <path fill="#3F5552" d="M23 69H80V101H23Z"/>
+  <use href="#window" x="26" y="72"/><use href="#window" x="67" y="72"/>
+  <use href="#window" x="26" y="87"/><use href="#window" x="67" y="87"/>
+  <path fill="#C5CEC1" d="M43 79H61V101H43Z"/>
+  <path fill="#A3AFA7" d="M45 81H59V101H45Z"/>
+  <path stroke="#88978F" d="M45 85H59M45 89H59M45 93H59M45 97H59"/>
+  <path fill="#DFE5D5" d="M43 79H61V81H43Z"/>
+  <path fill="#334744" d="M38 88H41V94H38Z"/>
+  <path fill="#B6D5A3" d="M39 89H40V91H39Z"/>
+  <path fill="#C2CABA" d="M16 101H88V103H16Z"/>
+
+  <!-- Wider right hall, matching the paired industrial blocks in the reference. -->
+  <path fill="#677570" d="M139 45L145 27H212L225 44V98L218 103H139Z"/>
+  <path fill="url(#cladding)" d="M139 45H218V101H139Z"/>
+  <path fill="#64736C" d="M218 45H225V98L218 102Z"/>
+  <path fill="#555365" d="M137 44L143 26H213L227 44V47H137Z"/>
+  <path fill="#B5BFB4" d="M141 42L146 29H211L221 42Z"/>
+  <path fill="#D2D8C8" d="M146 29H211L213 31H145Z"/>
+  <path stroke="#A0ADA1" d="M146 33H212M144 37H216M143 40H219"/>
+  <path fill="#DAD4E5" d="M138 43H225V45H138Z"/>
+  <path fill="#494858" d="M138 45H226V48H138Z"/>
+  <use href="#vent" x="154" y="31"/><use href="#vent" x="156" y="36"/>
+  <use href="#vent" x="178" y="31"/><use href="#vent" x="180" y="36"/>
+  <use href="#vent" x="201" y="31"/><use href="#vent" x="204" y="36"/>
+  <path fill="#3F5552" d="M159 70H211V101H159Z"/>
+  <use href="#window" x="162" y="73"/><use href="#window" x="198" y="73"/>
+  <use href="#window" x="162" y="88"/><use href="#window" x="198" y="88"/>
+  <path fill="#C9D0C2" d="M178 80H193V101H178Z"/>
+  <path fill="#9FADA4" d="M180 82H191V101H180Z"/>
+  <path stroke="#83958B" d="M180 86H191M180 90H191M180 94H191M180 98H191"/>
+  <path fill="#CDD4C4" d="M139 101H218V103H139Z"/>
+  <path fill="#5B6D66" d="M144 55H155V65H144Z"/>
+  <path fill="#AFC1AC" d="M146 57H148V59H146Z"/>
+  <path stroke="#8D9E91" d="M146 61H153M146 63H153"/>
+
+  <!-- Muted lavender lintels and warm entrance lights soften the industrial halls. -->
+  <path fill="#B2A4C5" d="M23 69H80V71H23ZM159 70H211V72H159Z"/>
+  <path fill="#DFD5EB" d="M43 79H61V80H43ZM178 80H193V81H178Z"/>
+
+  <!-- Small human-scale details: entry lights, trees, bollards and parked cars. -->
+  <path fill="#F1E7BC" d="M98 77H100V80H98ZM132 77H134V80H132Z"/>
+  <path fill="#5D7261" d="M91 99H100V103H91ZM133 99H142V103H133Z"/>
+  <path fill="#87A776" d="M92 97H99V100H92ZM134 97H141V100H134Z"/>
+  <path fill="#E3D4A2" d="M102 101H104V107H102ZM129 101H131V107H129Z"/>
+  <path fill="#566C65" d="M102 105H104V107H102ZM129 105H131V107H129Z"/>
+  <use href="#car" x="29" y="106"/><use href="#car" x="62" y="106"/>
+  <use href="#car" x="180" y="106"/>
+  <path fill="#7A896A" d="M20 122H32V125H20ZM83 120H95V123H83ZM148 121H160V124H148ZM214 122H226V125H214Z"/>
+  <!-- Tiny pixel flowers sit in the planted strips beside the entry path. -->
+  <path fill="#728D68" d="M91 119V122M96 118V121M140 118V121M145 119V122" stroke="#728D68"/>
+  <path fill="#C4A5D5" d="M89 118H93V120H89ZM143 118H147V120H143Z"/>
+  <path fill="#F2D9A1" d="M94 117H98V119H94ZM138 117H142V119H138Z"/>
+  <use href="#tree" x="20" y="101"/><use href="#tree" x="83" y="99"/>
+  <use href="#tree" x="148" y="100"/><use href="#tree" x="214" y="101"/>
+</svg>
