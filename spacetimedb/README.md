@@ -1,6 +1,6 @@
-# SENTINEL SpacetimeDB module
+# UN1C0RN^2 SpacetimeDB module
 
-This TypeScript module defines the persistent schema for the SENTINEL backend. It replaces the former Supabase migrations and seed data.
+This TypeScript module defines the persistent schema for the UN1C0RN^2 backend. It replaces the former Supabase migrations and seed data.
 
 ## Tables
 

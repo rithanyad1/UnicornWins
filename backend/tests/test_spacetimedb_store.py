@@ -77,7 +77,7 @@ def test_reducer_call_sends_bearer_token_and_row_argument() -> None:
 
 
 def test_reducer_error_is_raised() -> None:
-    store = _store(lambda request: httpx.Response(530, text="Only the SENTINEL backend identity"))
+    store = _store(lambda request: httpx.Response(530, text="Only the UN1C0RN^2 backend identity"))
     with pytest.raises(SpacetimeDBError, match="upsert_incident"):
         store.call_reducer("upsert_incident", [{}])
 
@@ -108,7 +108,7 @@ def test_read_rows_procedure_result_is_decoded_and_sorted_newest_first() -> None
 
 
 def test_unauthorized_procedure_error_is_raised_without_token() -> None:
-    store = _store(lambda request: httpx.Response(500, text="fatal error: Only the SENTINEL backend identity"))
+    store = _store(lambda request: httpx.Response(500, text="fatal error: Only the UN1C0RN^2 backend identity"))
     with pytest.raises(SpacetimeDBError) as excinfo:
         store.read_rows("facilities", 0, 1)
     assert "secret-token" not in str(excinfo.value)
@@ -147,7 +147,7 @@ async def test_repeated_failures_are_logged_once_then_recovery_is_reported(caplo
     def handler(request: httpx.Request) -> httpx.Response:
         if healthy["ok"]:
             return httpx.Response(200)
-        return httpx.Response(530, text="Only the SENTINEL backend identity may write")
+        return httpx.Response(530, text="Only the UN1C0RN^2 backend identity may write")
 
     service.store.client = httpx.Client(
         base_url="http://stdb.test", transport=httpx.MockTransport(handler),

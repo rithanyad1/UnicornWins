@@ -11,7 +11,7 @@ async def test_runtime_hydrates_persisted_facility_device_reading_and_command(mo
     now = datetime.now(timezone.utc)
     rows_by_table = {
         "facilities": [{
-            "id": "facility-main", "name": "SENTINEL Lab", "city": "Austin",
+            "id": "facility-main", "name": "UN1C0RN^2 Lab", "city": "Austin",
             "latitude": 30, "longitude": -97, "facility_type": "DEMO",
             "is_simulated": False, "created_at": now.isoformat(),
         }],

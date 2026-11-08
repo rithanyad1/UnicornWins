@@ -15,7 +15,7 @@ from telemetry_upload import send_report
 
 
 # ==========================================
-# SENTINEL - INFRASTRUCTURE MONITORING SYSTEM
+# UN1C0RN^2 - INFRASTRUCTURE MONITORING SYSTEM
 # Raspberry Pi Pico 2 W
 # ==========================================
 
@@ -58,7 +58,7 @@ def connect_wifi():
         print("IP Address:", wifi.ifconfig()[0])
         return True
 
-    print("Connecting SENTINEL to Wi-Fi...")
+    print("Connecting UN1C0RN^2 to Wi-Fi...")
 
     try:
         wifi.connect(WIFI_SSID, WIFI_PASSWORD)
@@ -66,7 +66,7 @@ def connect_wifi():
         for attempt in range(15):
 
             if wifi.isconnected():
-                print("SENTINEL WIFI CONNECTED!")
+                print("UN1C0RN^2 WIFI CONNECTED!")
                 print("IP Address:", wifi.ifconfig()[0])
                 return True
 
@@ -166,7 +166,7 @@ try:
     )
 
     oled.fill(0)
-    oled.text("SENTINEL", 30, 10)
+    oled.text("UN1C0RN^2", 32, 10)
     oled.text("Starting...", 20, 30)
     oled.show()
 
@@ -486,7 +486,7 @@ def update_display(temp, hum, vib, status):
     try:
         oled.fill(0)
 
-        oled.text("SENTINEL", 30, 0)
+        oled.text("UN1C0RN^2", 32, 0)
         oled.hline(0, 11, 128, 1)
 
         if temp is None:
@@ -573,12 +573,12 @@ connect_wifi()
 
 
 # ==========================================
-# MAIN SENTINEL SYSTEM
+# MAIN UN1C0RN^2 SYSTEM
 # ==========================================
 
 print("")
 print("================================")
-print("SENTINEL SYSTEM ONLINE")
+print("UN1C0RN^2 SYSTEM ONLINE")
 print("================================")
 print("Device:", DEVICE_ID)
 print("Monitoring temperature, humidity")
@@ -699,7 +699,7 @@ try:
             )
 
             print("----------------------------")
-            print("SENTINEL LIVE DATA")
+            print("UN1C0RN^2 LIVE DATA")
 
             print(json.dumps(payload))
 
@@ -765,7 +765,7 @@ try:
 
 except KeyboardInterrupt:
 
-    print("SENTINEL STOPPED")
+    print("UN1C0RN^2 STOPPED")
 
 
 finally:

@@ -1,4 +1,4 @@
-# SENTINEL backend
+# UN1C0RN^2 backend
 
 Safety-first FastAPI backend for environmental monitoring, command delivery, incident tracking, and simulated facilities.
 
@@ -180,7 +180,7 @@ Tests use in-memory state and mocks; no device, SpacetimeDB, or Gemini credentia
 - **409 on telemetry:** `timestamp_ms` must strictly increase for that device.
 - **409 for a manual command:** The device may be disconnected or the action may conflict with current safety conditions.
 - **`spacetimedb_status` is `not_configured`:** Set `SPACETIMEDB_DATABASE` and `SPACETIMEDB_TOKEN` and restart. Database outages are logged; buffered telemetry stays in process memory until a later flush.
-- **Reducer fails with "Only the SENTINEL backend identity may write":** `SPACETIMEDB_TOKEN` belongs to a different identity than the one that published the database. Use the token from `spacetime login show --token` on the publishing machine.
+- **Reducer fails with "Only the UN1C0RN^2 backend identity may write":** `SPACETIMEDB_TOKEN` belongs to a different identity than the one that published the database. Use the token from `spacetime login show --token` on the publishing machine.
 - **Gemini unavailable:** Verify the API key in Google AI Studio and that `GEMINI_MODEL` is a model available to that key. Rule-based monitoring and emergency actions continue.
 - **No anomaly results:** Train a model first. Training requires at least 20 baseline readings.
 - **No telemetry from hardware:** Confirm the backend and MCU share network access, the device sends UTC-independent `timestamp_ms` values, and the token is configured on both sides.

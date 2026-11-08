@@ -6,7 +6,7 @@ import "./globals.css";
 import TopNavigation from "@/components/layout/top-navigation";
 
 export const metadata: Metadata = {
-  title: "SENTINEL · Your Data Center",
+  title: "UN1C0RN^2 · Your Data Center",
   description: "Detect. Decide. Defend. Infrastructure monitoring command center.",
 };
 

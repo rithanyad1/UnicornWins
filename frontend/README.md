@@ -1,4 +1,4 @@
-# SENTINEL Hi-Fi frontend
+# UN1C0RN^2 Hi-Fi frontend
 
 Next.js, TypeScript and Tailwind CSS implementation of the Figma Hi-Fi page.
 

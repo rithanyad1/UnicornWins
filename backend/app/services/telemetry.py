@@ -32,7 +32,7 @@ class TelemetryService:
             "id": report["id"],
             "event_type": "HARDWARE_TELEMETRY",
             "device_id": "sentinel-pico",
-            "description": "SENTINEL-01 hardware report",
+            "description": "UN1C0RN^2 hardware report",
             "metadata": report,
             "created_at": report["recorded_at"],
         }

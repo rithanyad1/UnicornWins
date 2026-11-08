@@ -53,7 +53,7 @@ class Runtime:
         self.hardware_reports: deque[dict[str, Any]] = deque(maxlen=self.config.telemetry_history_limit)
         self.facilities: dict[str, dict[str, Any]] = {
             "facility-main": {
-                "id": "facility-main", "name": "SENTINEL Lab", "city": "Austin",
+                "id": "facility-main", "name": "UN1C0RN^2 Lab", "city": "Austin",
                 "latitude": 30.2672, "longitude": -97.7431, "facility_type": "DEMO",
                 "is_simulated": False, "status": "DISCONNECTED", "created_at": utc_now(),
             }
@@ -64,9 +64,9 @@ class Runtime:
         }
         if self.config.simulation_enabled:
             simulated = (
-                ("facility-sim-west", "SENTINEL Sim West", "San Francisco", 37.7749, -122.4194),
-                ("facility-sim-central", "SENTINEL Sim Central", "Chicago", 41.8781, -87.6298),
-                ("facility-sim-east", "SENTINEL Sim East", "New York", 40.7128, -74.0060),
+                ("facility-sim-west", "UN1C0RN^2 Sim West", "San Francisco", 37.7749, -122.4194),
+                ("facility-sim-central", "UN1C0RN^2 Sim Central", "Chicago", 41.8781, -87.6298),
+                ("facility-sim-east", "UN1C0RN^2 Sim East", "New York", 40.7128, -74.0060),
             )
             for facility_id, name, city, latitude, longitude in simulated:
                 self.facilities[facility_id] = {
@@ -422,7 +422,7 @@ class Runtime:
         decision = {
             "id": str(uuid4()),
             "incident_id": incident["id"],
-            "model_name": "SENTINEL safety rules",
+            "model_name": "UN1C0RN^2 safety rules",
             "anomaly_score": self.latest_anomaly.get(incident["facility_id"], {}).get("anomaly_score"),
             "anomaly_detected": self.latest_anomaly.get(incident["facility_id"], {}).get("anomaly_detected", False),
             "severity": incident["severity"],

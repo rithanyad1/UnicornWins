@@ -75,7 +75,7 @@ async def lifespan(app: FastAPI):
 def create_app(config: Settings | None = None) -> FastAPI:
     config = config or settings
     app = FastAPI(
-        title="SENTINEL Infrastructure Monitoring API",
+        title="UN1C0RN^2 Infrastructure Monitoring API",
         version="0.1.0",
         description="Safety-first environmental monitoring and response service.",
         lifespan=lifespan,

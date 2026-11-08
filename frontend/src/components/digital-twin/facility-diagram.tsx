@@ -19,7 +19,7 @@ function MapSidebar({ room, selectRoom }: { room: string; selectRoom: (id: strin
     </section>
     <section className="sidebar-section">
       <div className="sidebar-section-heading"><h2>Thermal activity</h2><span className="sidebar-code">15 MIN</span></div>
-      <div className="sidebar-temperature"><strong>34.1<span> °C</span></strong><span>↘ Falling</span></div>
+      <div className="sidebar-temperature"><strong>93.4<span> °F</span></strong><span>↘ Falling</span></div>
       <img className="sidebar-sparkline" src="/figma/temperature.svg" width="842" height="160" alt="Illustrative temperature trend rising then falling after cooling" />
       <div className="distribution-labels"><span>14:20</span><span>14:32</span></div>
     </section>
@@ -34,9 +34,9 @@ function MapSidebar({ room, selectRoom }: { room: string; selectRoom: (id: strin
 }
 
 const roomInfo: Record<string, { title: string; location: string; value: string; unit: string; status: string; response: string; incident?: string }> = {
-  A: { title: "Rack A-03", location: "Server hall A / sensor T-A03", value: "41.2°", unit: "TEMPERATURE / °C", status: "CRITICAL • RESPONDING", response: "The response is underway.", incident: "1042" },
-  B: { title: "Server hall B", location: "Server hall B / sensor T-B01", value: "26.4°", unit: "TEMPERATURE / °C", status: "NORMAL", response: "All systems normal." },
-  C: { title: "Network room", location: "Network room / sensor T-C01", value: "25.8°", unit: "TEMPERATURE / °C", status: "NORMAL", response: "All systems normal." },
+  A: { title: "Rack A-03", location: "Server hall A / sensor T-A03", value: "106.2°", unit: "TEMPERATURE / °F", status: "CRITICAL • RESPONDING", response: "The response is underway.", incident: "1042" },
+  B: { title: "Server hall B", location: "Server hall B / sensor T-B01", value: "79.5°", unit: "TEMPERATURE / °F", status: "NORMAL", response: "All systems normal." },
+  C: { title: "Network room", location: "Network room / sensor T-C01", value: "78.4°", unit: "TEMPERATURE / °F", status: "NORMAL", response: "All systems normal." },
   D: { title: "Cooling area", location: "Power & cooling / sensor W-D01", value: "Detected", unit: "WATER / MOISTURE", status: "CRITICAL • OPEN", response: "Water inspection required.", incident: "1041" },
 };
 
@@ -66,6 +66,6 @@ export default function FacilityDiagram({ initialRoom = "A", compact = false, mo
     </div>
     {monitoring && <div className="workspace-statusbar"><span><i className="map-status-dot" /> 4 monitored zones</span><span>2 active incidents</span><span>Illustrative snapshot</span></div>}
     </div>
-    <Panel id={monitoring ? "facility-inspector" : undefined} className="inspector">{monitoring && <div className="inspector-eyebrow">SELECTED LOCATION <span>{room}</span></div>}<Status muted>{info.status}</Status><h2 className="inspector-title">{compact && room === "A" ? "Temperature sensor" : info.title}</h2><p>{info.location}</p><div className="inspector-reading"><p className="inspector-value">{compact && room === "A" ? "38.2 °C" : info.value}</p><p className="small unit">{info.unit}</p></div><h3>{info.response}</h3>{room === "A" ? <><p>Fan active • Pico confirmed<br />Vent open / 90° reported</p><p>Recovery verification pending</p></> : <p>{room === "D" ? "Alarm active • inspection pending" : "Readings within normal range"}</p>}{info.incident ? <IncidentLink id={info.incident} /> : <Link className="status status-link" href="/overview">View facility overview →</Link>}</Panel>
+    <Panel id={monitoring ? "facility-inspector" : undefined} className="inspector">{monitoring && <div className="inspector-eyebrow">SELECTED LOCATION <span>{room}</span></div>}<Status muted>{info.status}</Status><h2 className="inspector-title">{compact && room === "A" ? "Temperature sensor" : info.title}</h2><p>{info.location}</p><div className="inspector-reading"><p className="inspector-value">{compact && room === "A" ? "100.8 °F" : info.value}</p><p className="small unit">{info.unit}</p></div><h3>{info.response}</h3>{room === "A" ? <><p>Fan active • Pico confirmed<br />Vent open / 90° reported</p><p>Recovery verification pending</p></> : <p>{room === "D" ? "Alarm active • inspection pending" : "Readings within normal range"}</p>}{info.incident ? <IncidentLink id={info.incident} /> : <Link className="status status-link" href="/overview">View facility overview →</Link>}</Panel>
   </div>;
 }

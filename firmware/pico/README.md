@@ -1,4 +1,4 @@
-# SENTINEL Pico 2 W
+# UN1C0RN^2 Pico 2 W
 
 `main.py` runs the supplied DS18B20, DHT11, MPU6500, OLED, fan, LED,
 and buzzer monitoring program. Every three seconds it prints a report and
@@ -12,7 +12,7 @@ posts the same JSON to `POST /api/v1/telemetry/hardware`.
 3. Copy `main.py`, `telemetry_upload.py`, and your `wifi_config.py` to the Pico.
 4. Start the backend on `0.0.0.0:8000` and allow the Pico to reach that port.
 
-The physical device label stays `SENTINEL-01`; the backend authenticates it
+UN1C0RN^2 keeps the protocol device ID `SENTINEL-01`; the backend authenticates it
 as its registered `sentinel-pico` controller. No backend secrets are embedded
 in the firmware repository. The credentials file is ignored by Git.
 

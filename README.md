@@ -1,6 +1,6 @@
-# SENTINEL (UnicornWins)
+# UN1C0RN^2 (UnicornWins)
 
-SENTINEL is a safety-first environmental monitoring system for small equipment rooms. An ESP32 reads temperature, humidity, vibration, and water sensors. A Raspberry Pi Pico drives the fan, vent, buzzer, and status LED. A FastAPI backend sits between them: it takes in telemetry, applies safety rules, opens incidents, queues hardware commands, and checks that conditions actually recover.
+UN1C0RN^2 is a safety-first environmental monitoring system for small equipment rooms. An ESP32 reads temperature, humidity, vibration, and water sensors. A Raspberry Pi Pico drives the fan, vent, buzzer, and status LED. A FastAPI backend sits between them: it takes in telemetry, applies safety rules, opens incidents, queues hardware commands, and checks that conditions actually recover.
 
 An Isolation Forest model and an optional Google Gemini agent add analysis on top. Neither one can bypass the deterministic safety rules.
 
@@ -37,9 +37,9 @@ An Isolation Forest model and an optional Google Gemini agent add analysis on to
 
    | Condition | Incident | Severity | Command |
    |---|---|---|---|
-   | temp ≥ critical (40 °C) | `CRITICAL_TEMPERATURE` | CRITICAL | `FAN_ON` |
-   | temp ≥ high (35 °C) | `HIGH_TEMPERATURE` | WARNING | `FAN_ON` (latched) |
-   | temp ≤ recovery (32 °C), fan latched | (none) | — | `FAN_OFF` |
+   | temp ≥ critical (104 °F) | `CRITICAL_TEMPERATURE` | CRITICAL | `FAN_ON` |
+   | temp ≥ high (95 °F) | `HIGH_TEMPERATURE` | WARNING | `FAN_ON` (latched) |
+   | temp ≤ recovery (89.6 °F), fan latched | (none) | — | `FAN_OFF` |
    | humidity ≥ 70 % | `HIGH_HUMIDITY` | WARNING | — |
    | water detected | `WATER_DETECTED` | CRITICAL | `BUZZER_ON` |
    | vibration ≥ 0.7 | `ABNORMAL_VIBRATION` | WARNING | `BUZZER_ON` |

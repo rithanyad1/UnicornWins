@@ -1,4 +1,4 @@
-"""Create SENTINEL's editable voxel data center and transparent pixel render.
+"""Create UN1C0RN^2's editable voxel data center and transparent pixel render.
 
 Run from the repository root:
   blender --background --python assets/blender/create_data_center.py
@@ -37,7 +37,7 @@ def material(name, color, glow=0):
 cream = material("Cream / meadow clouds", "F4F7EA")
 lavender = material("Lavender / facade", "CDB9DD")
 light_lavender = material("Pale lavender / trim", "E1D8F0")
-purple = material("Sentinel purple", "65509C")
+purple = material("UN1C0RN^2 purple", "65509C")
 dark = material("Server charcoal", "353047")
 sky = material("Sky blue glazing", "B3D4E4")
 blue = material("Blue glass shade", "7EADBF")
@@ -141,8 +141,15 @@ for x in (2.35, 3.35):
     for row in range(5):
         box("Chiller grille", (x, -2.735, .6 + .16 * row), (.6, .025, .055), roof)
 
-# A pixel-built SENTINEL sign; no font dependencies or external textures.
+# A pixel-built UN1C0RN^2 sign; no font dependencies or external textures.
 glyphs = {
+    "U": ["101", "101", "101", "101", "111"],
+    "1": ["010", "110", "010", "010", "111"],
+    "C": ["111", "100", "100", "100", "111"],
+    "0": ["111", "101", "101", "101", "111"],
+    "R": ["110", "101", "110", "101", "101"],
+    "^": ["010", "101", "000", "000", "000"],
+    "2": ["111", "001", "111", "100", "111"],
     "S": ["111", "100", "111", "001", "111"],
     "E": ["111", "100", "110", "100", "111"],
     "N": ["101", "111", "111", "111", "101"],
@@ -150,9 +157,9 @@ glyphs = {
     "I": ["111", "010", "010", "010", "111"],
     "L": ["100", "100", "100", "100", "111"],
 }
-box("SENTINEL signage backing", (-1.5, -2.45, 2.95), (3.25, .15, .56), purple)
+box("UN1C0RN^2 signage backing", (-1.5, -2.45, 2.95), (3.25, .15, .56), purple)
 pixel = .078
-for index, character in enumerate("SENTINEL"):
+for index, character in enumerate("UN1C0RN^2"):
     for row, cells in enumerate(glyphs[character]):
         for col, cell in enumerate(cells):
             if cell == "1":
@@ -211,4 +218,4 @@ scene.camera = camera
 scene.render.filepath = str(OUTPUT / "sentinel-data-center.png")
 bpy.ops.wm.save_as_mainfile(filepath=str(ROOT / "assets/blender/sentinel-data-center.blend"))
 bpy.ops.render.render(write_still=True)
-print("SENTINEL: editable Blender scene and transparent pixel render complete.")
+print("UN1C0RN^2: editable Blender scene and transparent pixel render complete.")

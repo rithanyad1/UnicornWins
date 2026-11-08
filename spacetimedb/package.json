@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "SENTINEL SpacetimeDB module (tables, seed data, and write reducers)",
+  "description": "UN1C0RN^2 SpacetimeDB module (tables, seed data, and write reducers)",
   "scripts": {
     "typecheck": "tsc --noEmit"
   },

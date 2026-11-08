@@ -14,6 +14,6 @@ export default function Overview() {
     <SystemOverview report={report} />
     <div className="dashboard-main-grid"><EnvironmentalCharts report={report} reports={reports} /><AiAnalysis report={report} /></div>
     <ActivityFeed reports={reports} />
-    <footer className="dashboard-footer"><span><Icon name="shield"/> SENTINEL <span> / </span> A little magic. Complete visibility.</span><span role="status">{connected ? "Hardware connected · Live readings" : "Hardware disconnected · Values are null"}</span></footer>
+    <footer className="dashboard-footer"><span><Icon name="shield"/> UN1C0RN^2 <span> / </span> A little magic. Complete visibility.</span><span role="status">{connected ? "Hardware connected · Live readings" : "Hardware disconnected · Values are null"}</span></footer>
   </main>;
 }

@@ -1,4 +1,4 @@
-// SENTINEL SpacetimeDB module.
+// UN1C0RN^2 SpacetimeDB module.
 //
 // Replaces the former Supabase schema (supabase/migrations + seed.sql).
 //
@@ -180,7 +180,7 @@ function requireWriter(
   backendIdentity: string | undefined
 ): void {
   if (!isAuthorizedWriter(ownerRow, sender, backendIdentity)) {
-    throw new SenderError('Only the SENTINEL backend identity may access this database');
+    throw new SenderError('Only the UN1C0RN^2 backend identity may access this database');
   }
 }
 
@@ -206,10 +206,10 @@ function requireJson(field: string, value: string): void {
 
 // Seed data (formerly supabase/seed.sql).
 const SEED_FACILITIES = [
-  ['facility-main', 'SENTINEL Lab', 'Austin', 30.2672, -97.7431, 'DEMO', false],
-  ['facility-sim-west', 'SENTINEL Sim West', 'San Francisco', 37.7749, -122.4194, 'SIMULATED', true],
-  ['facility-sim-central', 'SENTINEL Sim Central', 'Chicago', 41.8781, -87.6298, 'SIMULATED', true],
-  ['facility-sim-east', 'SENTINEL Sim East', 'New York', 40.7128, -74.006, 'SIMULATED', true],
+  ['facility-main', 'UN1C0RN^2 Lab', 'Austin', 30.2672, -97.7431, 'DEMO', false],
+  ['facility-sim-west', 'UN1C0RN^2 Sim West', 'San Francisco', 37.7749, -122.4194, 'SIMULATED', true],
+  ['facility-sim-central', 'UN1C0RN^2 Sim Central', 'Chicago', 41.8781, -87.6298, 'SIMULATED', true],
+  ['facility-sim-east', 'UN1C0RN^2 Sim East', 'New York', 40.7128, -74.006, 'SIMULATED', true],
 ] as const;
 
 const SEED_DEVICES = [

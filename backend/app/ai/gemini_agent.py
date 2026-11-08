@@ -136,7 +136,7 @@ class GeminiAgent:
             {
                 "role": "system",
                 "content": (
-                    "You are SENTINEL Infrastructure Response Agent. Analyze the provided incident "
+                    "You are UN1C0RN^2 Infrastructure Response Agent. Analyze the provided incident "
                     "and use backend tools for evidence. Hardware actions are optional requests and "
                     "are subject to backend policy. Never claim an action succeeded without device "
                     "acknowledgment. Give a concise final summary; do not loop."
@@ -270,7 +270,7 @@ class GeminiAgent:
         return {
             "id": str(uuid4()),
             "incident_id": incident["id"],
-            "model_name": f"Google Gemini ({model})" if source == "GEMINI" else "SENTINEL safety rules",
+            "model_name": f"Google Gemini ({model})" if source == "GEMINI" else "UN1C0RN^2 safety rules",
             "anomaly_score": None,
             "anomaly_detected": anomaly_detected,
             "severity": incident["severity"],
