@@ -10,6 +10,8 @@ def validate_device_token(config: Settings, device_id: str, supplied: str | None
         configured, fallback = config.esp32_device_token, "dev-esp32-token"
     elif device_id == "sentinel-pico":
         configured, fallback = config.pico_device_token, "dev-pico-token"
+    elif device_id == config.sentinel_device_id:
+        configured, fallback = config.sentinel_device_token, "dev-sentinel-token"
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unknown device identity")
     expected = _configured_or_development_token(configured, fallback, config.app_env)

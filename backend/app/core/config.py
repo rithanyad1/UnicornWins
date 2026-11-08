@@ -20,6 +20,10 @@ class Settings(BaseSettings):
     gemini_timeout_seconds: float = 60.0
     esp32_device_token: str = ""
     pico_device_token: str = ""
+    # The standalone SENTINEL Pico 2 W node: reads sensors and drives its own fan,
+    # LEDs and buzzer, and reports over USB serial via scripts/serial_bridge.py.
+    sentinel_device_id: str = "SENTINEL-01"
+    sentinel_device_token: str = ""
     operator_api_key: str = ""
     simulation_enabled: bool = True
     high_temp_threshold: float = 35.0

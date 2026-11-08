@@ -2,33 +2,66 @@
 
 import { useId, useState } from "react";
 import { Panel } from "@/components/ui/primitives";
+import { useLiveData } from "@/hooks/use-live-data";
+import { cToF, formatTime, readingF } from "@/lib/utils";
 
-export function TrendChart({ title, asset = "temperature", wide = false }: { title: string; asset?: string; wide?: boolean }) {
-  const widths: Record<string, number> = { temperature: 842, humidity: 387, vibration: 387, recovery: 1336 };
-  return <Panel title={title} className="chart-panel"><div className={`chart-art ${wide ? "chart-wide" : ""}`}><img src={`/figma/${asset}.svg`} alt={`Illustrative ${title.toLowerCase()} trend`} width={widths[asset]} height="160" /></div><div className="chart-times"><span>14:20</span><span>14:26</span><span>14:32</span></div></Panel>;
+type Series = { label: string; unit: string; color: string; values: number[]; times: string[]; threshold?: { value: number; label: string } };
+
+function niceRange(values: number[], threshold?: number): [number, number] {
+  const all = threshold === undefined ? values : [...values, threshold];
+  let min = Math.min(...all);
+  let max = Math.max(...all);
+  if (max - min < 1e-6) { min -= 1; max += 1; }
+  const pad = (max - min) * 0.15;
+  return [min - pad, max + pad];
 }
 
-const readings = {
-  temperature: { label: "Temperature", value: "38.2", unit: "°C", color: "#8973d7", values: [29, 29.4, 30.1, 31.8, 33, 35.8, 39.4, 41.2, 42, 41, 39.6, 38.2], range: [25, 45], ticks: [45, 40, 35, 30, 25] },
-  humidity: { label: "Humidity", value: "45", unit: "%", color: "#4b9fba", values: [43, 44, 43.5, 44.2, 44, 45, 44.5, 46, 45.5, 44.8, 45.2, 45], range: [35, 55], ticks: [55, 50, 45, 40, 35] },
-  vibration: { label: "Vibration", value: "0.08", unit: "", color: "#c278a8", values: [0.07, 0.07, 0.09, 0.06, 0.08, 0.075, 0.09, 0.065, 0.08, 0.07, 0.085, 0.08], range: [0, 0.16], ticks: [0.16, 0.12, 0.08, 0.04, 0] },
-};
-export default function EnvironmentalCharts() {
-  const [selected, setSelected] = useState<keyof typeof readings>("temperature");
+// A line chart of real readings, oldest on the left.
+export function LineChart({ series, height = 235, label }: { series: Series; height?: number; label: string }) {
   const gradientId = useId();
-  const data = readings[selected];
-  const y = (value: number) => 190 - (value - data.range[0]) / (data.range[1] - data.range[0]) * 164;
-  const points = data.values.map((value, index) => `${54 + index * 54},${y(value)}`).join(" ");
-  const lastY = y(data.values[data.values.length - 1]);
-  return <section className="environment-panel"><div className="dashboard-section-heading"><div><h2>Environmental trends</h2><p>Small signals. The complete picture.</p></div><span className="chart-period">Last 15 minutes</span></div>
-    <div className="chart-tabs" aria-label="Sensor chart">{Object.entries(readings).map(([key, item]) => <button key={key} onClick={() => setSelected(key as keyof typeof readings)} aria-pressed={selected === key}>{item.label}</button>)}</div>
-    <div className="chart-reading" aria-live="polite"><strong>{data.value}<span>{data.unit}</span></strong><span className="chart-trend">{selected === "temperature" ? "↘ Cooling response active" : "✓ Within normal range"}</span></div>
-    <div className="environment-chart"><svg viewBox="0 0 690 235" role="img" aria-label={`Illustrative ${data.label.toLowerCase()} readings over the last 15 minutes. Current value ${data.value} ${data.unit}.`}>
-      <defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={data.color} stopOpacity=".22"/><stop offset="100%" stopColor={data.color} stopOpacity=".01"/></linearGradient></defs>
-      {data.ticks.map(tick => <g key={tick}><line x1="54" x2="648" y1={y(tick)} y2={y(tick)} stroke="#eeedf5" strokeDasharray="3 5"/><text x="32" y={y(tick) + 4} textAnchor="end">{tick}</text></g>)}
-      {selected === "temperature" && <g><line x1="54" x2="648" y1={y(35)} y2={y(35)} stroke="#d6b18d" strokeDasharray="5 5"/><text x="645" y={y(35) - 8} textAnchor="end" className="threshold-label">35 °C threshold</text></g>}
-      <polygon points={`54,190 ${points} 648,190`} fill={`url(#${gradientId})`}/><polyline points={points} stroke={data.color} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="648" cy={lastY} r="8" fill={data.color} fillOpacity=".15"/><circle cx="648" cy={lastY} r="4" fill={data.color} stroke="white" strokeWidth="2"/>
-      {["14:17", "14:20", "14:23", "14:26", "14:29", "14:32"].map((time, index) => <text key={time} x={54 + index * 118.8} y="222" textAnchor={index === 0 ? "start" : index === 5 ? "end" : "middle"}>{time}</text>)}
-    </svg></div><div className="chart-legend"><span><i style={{ background: data.color }}/>{data.label}</span><span>Illustrative sensor readings</span></div></section>;
+  const { values, times, threshold, color } = series;
+  if (values.length < 2) return <div className="empty-state"><p>Waiting for readings from the SENTINEL node…</p></div>;
+  const [lo, hi] = niceRange(values, threshold?.value);
+  const bottom = height - 45;
+  const y = (value: number) => bottom - (value - lo) / (hi - lo) * (bottom - 26);
+  const x = (index: number) => 54 + index * (594 / (values.length - 1));
+  const points = values.map((value, index) => `${x(index).toFixed(1)},${y(value).toFixed(1)}`).join(" ");
+  const ticks = Array.from({ length: 5 }, (_, index) => lo + (hi - lo) * (index + 0.5) / 5);
+  const labelIndexes = [0, Math.floor((values.length - 1) / 2), values.length - 1];
+  return <svg viewBox={`0 0 690 ${height}`} role="img" aria-label={label}>
+    <defs><linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity=".22"/><stop offset="100%" stopColor={color} stopOpacity=".01"/></linearGradient></defs>
+    {ticks.map(tick => <g key={tick}><line x1="54" x2="648" y1={y(tick)} y2={y(tick)} stroke="#eeedf5" strokeDasharray="3 5"/><text x="32" y={y(tick) + 4} textAnchor="end">{tick.toFixed(hi - lo < 1 ? 2 : 1)}</text></g>)}
+    {threshold && <g><line x1="54" x2="648" y1={y(threshold.value)} y2={y(threshold.value)} stroke="#d6b18d" strokeDasharray="5 5"/><text x="645" y={y(threshold.value) - 8} textAnchor="end" className="threshold-label">{threshold.label}</text></g>}
+    <polygon points={`54,${bottom} ${points} 648,${bottom}`} fill={`url(#${gradientId})`}/><polyline points={points} stroke={color} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="648" cy={y(values[values.length - 1])} r="8" fill={color} fillOpacity=".15"/><circle cx="648" cy={y(values[values.length - 1])} r="4" fill={color} stroke="white" strokeWidth="2"/>
+    {labelIndexes.map((index, position) => <text key={position} x={x(index)} y={height - 13} textAnchor={position === 0 ? "start" : position === 2 ? "end" : "middle"}>{formatTime(times[index])}</text>)}
+  </svg>;
+}
+
+export function TrendChart({ title, series }: { title: string; series: Series }) {
+  return <Panel title={title} className="chart-panel"><div className="environment-chart"><LineChart series={series} label={title} /></div></Panel>;
+}
+
+type Key = "temperature" | "humidity" | "vibration";
+
+export default function EnvironmentalCharts() {
+  const data = useLiveData();
+  const [selected, setSelected] = useState<Key>("temperature");
+  const recent = data.history.slice(-120);
+  const times = recent.map(r => r.recorded_at);
+  const limits = data.status?.thresholds;
+  const all: Record<Key, Series> = {
+    temperature: { label: "Temperature", unit: "°F", color: "#8973d7", values: recent.map(readingF), times, threshold: limits && { value: cToF(limits.high_temp_c), label: `${cToF(limits.high_temp_c).toFixed(0)} °F threshold` } },
+    humidity: { label: "Humidity", unit: "%", color: "#4b9fba", values: recent.map(r => r.humidity_percent), times, threshold: limits && { value: limits.high_humidity_percent, label: `${limits.high_humidity_percent}% threshold` } },
+    vibration: { label: "Vibration", unit: "g", color: "#c278a8", values: recent.map(r => r.vibration_g ?? r.vibration_score), times, threshold: limits && { value: limits.vibration, label: `${limits.vibration} g threshold` } },
+  };
+  const series = all[selected];
+  const current = series.values.at(-1);
+  const aboveThreshold = current !== undefined && series.threshold && current >= series.threshold.value;
+  const period = recent.length > 1 ? `Last ${Math.max(1, Math.round((new Date(times.at(-1)!).getTime() - new Date(times[0]).getTime()) / 60000))} min` : "Live";
+  return <section className="environment-panel"><div className="dashboard-section-heading"><div><h2>Environmental trends</h2><p>Live readings from the SENTINEL node.</p></div><span className="chart-period">{period}</span></div>
+    <div className="chart-tabs" aria-label="Sensor chart">{(Object.keys(all) as Key[]).map(key => <button key={key} onClick={() => setSelected(key)} aria-pressed={selected === key}>{all[key].label}</button>)}</div>
+    <div className="chart-reading" aria-live="polite"><strong>{current === undefined ? "—" : current.toFixed(selected === "vibration" ? 3 : 1)}<span>{current === undefined ? "" : series.unit}</span></strong><span className="chart-trend">{current === undefined ? "No readings yet" : aboveThreshold ? "▲ Above threshold" : "✓ Within normal range"}</span></div>
+    <div className="environment-chart"><LineChart series={series} label={`${series.label} readings. Current value ${current ?? "unknown"} ${series.unit}.`} /></div>
+    <div className="chart-legend"><span><i style={{ background: series.color }}/>{series.label}</span><span>{recent.length} readings</span></div></section>;
 }

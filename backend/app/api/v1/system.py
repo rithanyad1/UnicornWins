@@ -40,8 +40,25 @@ async def system_status(request: Request) -> dict:
         "latest_telemetry_at": max(
             (item["recorded_at"] for item in runtime.latest.values()), default=None
         ),
+        "thresholds": {
+            "high_temp_c": runtime.config.high_temp_threshold,
+            "critical_temp_c": runtime.config.critical_temp_threshold,
+            "recovery_temp_c": runtime.config.recovery_temp_threshold,
+            "high_humidity_percent": runtime.config.high_humidity_threshold,
+            "vibration": runtime.config.vibration_threshold,
+        },
+        "devices": list(runtime.devices.values()),
         "checked_at": utc_now(),
     }
+
+
+@router.get("/events")
+async def recent_events(request: Request, limit: int = 50, include_readings: bool = False) -> dict:
+    if not 1 <= limit <= 500:
+        raise HTTPException(status_code=422, detail="limit must be between 1 and 500")
+    noisy = set() if include_readings else {"telemetry.reading", "device.report"}
+    events = [item for item in request.app.state.runtime.events if item["type"] not in noisy]
+    return {"events": events[-limit:][::-1]}
 
 
 @router.put("/system/mode")

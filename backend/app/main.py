@@ -9,6 +9,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
+from app.api.v1.hardware import wifi_router as sentinel_wifi_router
 from app.api.v1.router import router as api_router
 from app.core.config import Settings, settings
 from app.core.security import validate_device_token
@@ -122,6 +123,7 @@ def create_app(config: Settings | None = None) -> FastAPI:
         allow_headers=["Content-Type", "X-Device-Token", "X-Operator-Key", "Idempotency-Key"],
     )
     app.include_router(api_router, prefix="/api/v1")
+    app.include_router(sentinel_wifi_router, prefix="/api")
     app.include_router(websocket_router)
 
     @app.get("/health")
