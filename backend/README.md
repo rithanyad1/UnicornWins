@@ -193,3 +193,19 @@ Tests use in-memory state and mocks; no device, SpacetimeDB, or Gemini credentia
 - Test actuator wiring and GPIO polarity before enabling automatic responses in a physical facility.
 - The service-role key and operator key belong only on the backend. Use TLS and rotate device/operator tokens before deployment.
 - The in-memory queue/state is intentionally resilient to an external database outage but is not durable across a backend process restart. Use a persistent message queue for deployments that require restart-safe buffering.
+
+## Pico 2 W native hardware reports
+
+The supplied `SENTINEL-01` program uploads to `POST /api/v1/telemetry/hardware`
+using `X-Device-Token` matching `PICO_DEVICE_TOKEN`. Reports preserve Fahrenheit,
+vibration in g, nullable sensor values, local status, fan state, and alert reasons.
+They are saved in the existing SpacetimeDB `system_events` JSON metadata under
+`HARDWARE_TELEMETRY` and published over WebSocket as `hardware.telemetry`.
+
+`GET /api/v1/telemetry/hardware?limit=100` returns recent reports, oldest first.
+Responses to uploads include `persisted`: false means the database is not
+configured and the report is held in memory only. A configured database write
+failure returns 503. These reports feed the `/overview` dashboard. The history
+response includes `connected`, `device_timeout_seconds`, and `checked_at` so
+the dashboard can clear stale values. They do not feed the ESP32 safety rules. See [Pico setup](../firmware/pico/README.md)
+for firmware installation and network configuration.

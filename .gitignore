@@ -31,6 +31,7 @@ backend/data/models/*
 .pio/
 firmware/esp32/include/config.h
 firmware/pico/config.py
+firmware/pico/wifi_config.py
 
 # Claude Code
 CLAUDE.md

@@ -50,6 +50,7 @@ class Runtime:
             lambda: deque(maxlen=self.config.telemetry_history_limit)
         )
         self.latest: dict[str, dict[str, Any]] = {}
+        self.hardware_reports: deque[dict[str, Any]] = deque(maxlen=self.config.telemetry_history_limit)
         self.facilities: dict[str, dict[str, Any]] = {
             "facility-main": {
                 "id": "facility-main", "name": "SENTINEL Lab", "city": "Austin",
@@ -157,6 +158,10 @@ class Runtime:
                 "parameters": row.get("parameters") or {},
                 "reported_state": row.get("reported_state") or {},
             })
+        events = await self.persistence.list_recent("system_events", "created_at")
+        for event in reversed(events):
+            if event["event_type"] == "HARDWARE_TELEMETRY":
+                self.hardware_reports.append(event["metadata"])
         for facility_id in self.facilities:
             await self._refresh_facility_status(facility_id)
 

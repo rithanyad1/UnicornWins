@@ -1,12 +1,11 @@
-import Link from "next/link";
+import type { HardwareReport } from "@/hooks/use-live-data";
 import Icon from "./dashboard-icon";
 
-const activity = [
-  ["14:32:02", "Rule", "High-temperature threshold crossed", "temperature"],
-  ["14:32:03", "Command", "Cooling command sent / cmd-208", "cooling"],
-  ["14:32:03", "Hardware", "Fan active · vent open · Pico confirmed", "check"],
-  ["14:32:15", "Sensor", "Temperature decreasing · verification pending", "vibration"],
-];
-export default function ActivityFeed() {
-  return <section className="dashboard-activity"><div className="dashboard-section-heading"><h2>Recent activity</h2><Link href="/incidents">View incidents <Icon name="arrow"/></Link></div><div className="activity-table"><div className="activity-table-head"><span>EVENT</span><span>TIME</span><span>SOURCE</span></div>{activity.map(([time, type, description, icon], index) => <div className="dashboard-activity-row" key={index}><div><span className={`activity-icon activity-icon-${icon}`}><Icon name={icon}/></span><p>{description}</p></div><time>{time}</time><span className={`activity-source source-${type.toLowerCase()}`}>{type}</span></div>)}</div><div className="activity-footer"><span className="online-dot"/> Water sensor dry <span>·</span> Valid reading</div></section>;
+export default function ActivityFeed({ reports }: { reports: HardwareReport[] }) {
+  return <section className="dashboard-activity">
+    <div className="dashboard-section-heading"><h2>Recent activity</h2></div>
+    <div className="activity-table"><div className="activity-table-head"><span>EVENT</span><span>TIME</span><span>SOURCE</span></div>
+      {reports.length ? reports.slice(-4).reverse().map(report => <div className="dashboard-activity-row" key={report.id}><div><span className="activity-icon"><Icon name="vibration"/></span><p>{report.status} · Fan {report.fan_speed_percent}%</p></div><time dateTime={report.recorded_at}>{new Date(report.recorded_at).toLocaleTimeString([], { hour12: false })}</time><span className="activity-source">Hardware</span></div>) : <div className="dashboard-activity-row"><div><p>No live hardware activity</p></div><span>null</span><span className="activity-source">Disconnected</span></div>}
+    </div><div className="activity-footer">{reports.length ? "Live Pico reports" : "Waiting for hardware connection"}</div>
+  </section>;
 }

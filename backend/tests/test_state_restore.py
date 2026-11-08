@@ -30,6 +30,7 @@ async def test_runtime_hydrates_persisted_facility_device_reading_and_command(mo
         }],
         "incidents": [],
         "ai_decisions": [],
+        "system_events": [],
         "hardware_commands": [{
             "id": "command-1", "device_id": "sentinel-pico",
             "command_type": "FAN_ON", "status": "PENDING",
