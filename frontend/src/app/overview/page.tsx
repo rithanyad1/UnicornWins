@@ -11,10 +11,17 @@ export default function Overview() {
   const { report, reports, connected, error } = useLiveData();
   return <main id="main" className="page dashboard-page" data-node-id="46:6">
     <h1 className="sr-only">Facility dashboard</h1>
+<<<<<<< HEAD
     {error && <p role="alert">{error}</p>}
     <SystemOverview report={report} />
     <div className="dashboard-main-grid"><EnvironmentalCharts report={report} reports={reports} /><AiAnalysis report={report} /></div>
     <ActivityFeed reports={reports} />
     <footer className="dashboard-footer"><span><Icon name="shield"/> UN1C0RN^2 <span> / </span> A little magic. Complete visibility.</span><span role="status">{connected ? "Hardware connected · Live readings" : "Hardware disconnected · Values are null"}</span></footer>
+=======
+    <SystemOverview />
+    <div className="dashboard-main-grid"><EnvironmentalCharts /><AiAnalysis /></div>
+    <ActivityFeed />
+    <footer className="dashboard-footer"><span><Icon name="shield"/> UN1C0RN^2 <span> / </span> A little magic. Complete visibility.</span><span>Demo data · Hardware states are illustrative</span></footer>
+>>>>>>> 245739c (Last Changes)
   </main>;
 }

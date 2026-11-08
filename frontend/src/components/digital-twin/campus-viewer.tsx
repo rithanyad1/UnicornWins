@@ -5,7 +5,7 @@ import type { Object3D, Mesh, Material, Texture, Vector3 } from "three";
 import mapLayout from "@/lib/facility-map-layout.json";
 import { teamMembers } from "@/lib/team-members";
 
-const labels = { A: "A · Heat", B: "B · Servers", C: "C · Network", D: "D · Water" };
+const labels = { A: "A · Heat", B: "B · Window", C: "C · Shelf", D: "D · Water" };
 
 function disposeModel(root: Object3D) {
   const materials = new Set<Material>();
