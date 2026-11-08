@@ -107,3 +107,26 @@ def test_live_websocket_receives_node_readings() -> None:
                 if "telemetry.reading" in types:
                     break
             assert "telemetry.reading" in types
+
+
+def test_wifi_endpoint_accepts_pico_post_without_headers() -> None:
+    # What the Pico's urequests.post(BACKEND_URL, json=payload) sends: no token header.
+    with make_client() as client:
+        response = client.post("/api/sensor-data", json=node_report())
+        assert response.status_code == 202
+        assert response.json()["success"] is True
+        latest = client.get("/api/sensor-data").json()
+        assert latest["device"]["status"] == "CONNECTED"
+        assert latest["reading"]["temperature_f"] == 72.5
+
+
+def test_wifi_endpoint_requires_token_once_one_is_configured() -> None:
+    with make_client(sentinel_device_token="s3cret") as client:
+        assert client.post("/api/sensor-data", json=node_report()).status_code == 401
+        ok = client.post("/api/sensor-data", json=node_report(), headers={"X-Device-Token": "s3cret"})
+        assert ok.status_code == 202
+
+
+def test_wifi_endpoint_requires_token_outside_development() -> None:
+    with make_client(app_env="production", sentinel_device_token="s3cret") as client:
+        assert client.post("/api/sensor-data", json=node_report()).status_code == 401

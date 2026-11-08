@@ -8,10 +8,10 @@ An Isolation Forest model and an optional Google Gemini agent add analysis on to
 
 | Area | Status |
 |---|---|
-| `backend/` | Implemented. FastAPI service with 46 passing tests. |
+| `backend/` | Implemented. FastAPI service with 49 passing tests. |
 | `spacetimedb/` | Implemented. TypeScript SpacetimeDB module with tables, seed data, and owner-only write reducers. |
 | `frontend/` | Implemented. Next.js dashboard showing live backend data over REST and `/ws/live`. |
-| SENTINEL Pico 2 W node | Firmware kept by the hardware team (not in this repo). Its USB serial reports reach the backend through `scripts/serial_bridge.py`. |
+| SENTINEL Pico 2 W node | Firmware kept by the hardware team (not in this repo). It posts reports to `/api/sensor-data` over Wi-Fi; `scripts/serial_bridge.py` is a USB fallback. |
 | `firmware/esp32`, `firmware/pico` | Scaffolded only (files are empty). |
 | `scripts/` | `serial_bridge.py` and `start-local.sh` implemented; the rest are empty. |
 | `docs/` | Scaffolded only (files are empty). |
@@ -95,8 +95,9 @@ backend/
   tests/                 pytest suite (in-memory, no external services)
 spacetimedb/             SpacetimeDB module (src/index.ts): tables, seed, reducers
 frontend/                Next.js dashboard (live data via src/lib/api.ts and src/hooks/use-live-data.ts)
-scripts/serial_bridge.py USB serial → backend bridge for the SENTINEL node
-firmware/, docs/         Placeholders
+scripts/serial_bridge.py USB serial → backend bridge (fallback when Wi-Fi is not available)
+docs/setup.md            Phone hotspot setup for the Pico and the backend
+firmware/, other docs/   Placeholders
 ```
 
 ## Quick start (backend)
@@ -106,7 +107,7 @@ cd backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e '.[test]'
 cp .env.example .env
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 Interactive API docs are at <http://127.0.0.1:8000/docs>. Run the tests with `python -m pytest -q`.
@@ -117,21 +118,19 @@ In development, blank tokens fall back to `dev-esp32-token`, `dev-pico-token`, a
 
 ## Running with the SENTINEL hardware
 
-The SENTINEL node is a Raspberry Pi Pico 2 W that reads a DS18B20 (temperature), DHT11 (humidity) and MPU6500 (vibration), and drives its own fan, LEDs, buzzer and OLED. Every 3 seconds it prints a JSON report on its USB serial port. Its firmware is used unchanged.
+The SENTINEL node is a Raspberry Pi Pico 2 W that reads a DS18B20 (temperature), DHT11 (humidity) and MPU6500 (vibration), and drives its own fan, LEDs, buzzer and OLED. Every 3 seconds it builds a JSON report and sends it to the backend over Wi-Fi:
 
 ```
-Pico 2 W ── USB serial (JSON lines) ──▶ scripts/serial_bridge.py ── POST /api/v1/hardware/report ──▶ backend ── /ws/live ──▶ dashboard
+Pico 2 W ── Wi-Fi (phone hotspot) ── POST /api/sensor-data ──▶ backend ── /ws/live ──▶ dashboard
 ```
 
-1. Plug the Pico into the computer that runs the backend, and close Thonny so the serial port is free.
-2. `cd backend && cp .env.example .env`. The example matches the node's thresholds (warning 74 °F, critical 76 °F, humidity 60 %, vibration 0.20 g) and turns the simulator off.
-3. `pip install pyserial`, then run everything with `scripts/start-local.sh`, or start each part yourself:
-   - `cd backend && uvicorn app.main:app --port 8000`
-   - `cd frontend && npm install && npm run dev`
-   - `python3 scripts/serial_bridge.py` (auto-detects the Pico; use `--port COM3` or `--port /dev/ttyACM0` if needed)
-4. Open <http://localhost:3000>.
+[docs/setup.md](docs/setup.md) walks through the hotspot setup: starting the backend on `0.0.0.0`, finding the laptop's IP, opening port 8000 in the firewall, and the few lines the Pico needs to post its report.
 
-The backend converts °F to °C, opens and verifies incidents, and records sensor errors. It never queues commands for this node, because the node runs its fan itself and does not poll for commands. The node has no water sensor, so `water_detected` is always false.
+- `POST /api/sensor-data` takes the Pico's report unchanged (`device_id`, `temperature_f`, `humidity_percent`, `vibration_g`, `status`, `fan_active`, `fan_speed_percent`, `alert_reasons`). `GET /api/sensor-data` returns the latest reading.
+- The backend converts °F to °C, opens and verifies incidents, and records sensor errors. It never queues commands for this node, because the node runs its fan itself.
+- `backend/.env.example` matches the node's thresholds (warning 74 °F, critical 76 °F, humidity 60 %, vibration 0.20 g) and turns the simulator off.
+- The node has no water sensor, so `water_detected` is always false.
+- **USB fallback:** with the Pico plugged into the backend laptop, `scripts/serial_bridge.py` forwards the reports the Pico already prints over serial (`scripts/start-local.sh --usb-bridge`).
 
 ## Authentication
 

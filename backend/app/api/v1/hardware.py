@@ -1,9 +1,10 @@
 """Ingest for the standalone SENTINEL Pico 2 W node.
 
-The node's firmware prints one JSON report per line over USB serial, in its own
-format (Fahrenheit, nullable sensor values, its own status). This route accepts
-that report unchanged, as forwarded by ``scripts/serial_bridge.py``, and maps it
-onto the backend's telemetry pipeline, so the firmware never needs changing.
+The node builds one JSON report every 3 seconds in its own format (Fahrenheit,
+nullable sensor values, its own status). It reaches the backend either over
+Wi-Fi, posted straight to ``POST /api/sensor-data``, or over USB serial through
+``scripts/serial_bridge.py``, which posts to ``POST /api/v1/hardware/report``.
+Both routes map the report onto the backend's telemetry pipeline unchanged.
 """
 
 import time
@@ -16,6 +17,8 @@ from app.core.security import validate_device_token
 from app.schemas.telemetry import TelemetryIn
 
 router = APIRouter()
+# Mounted at /api, matching the URL the Pico's send_to_backend() posts to.
+wifi_router = APIRouter()
 
 
 class SentinelReport(BaseModel):
@@ -49,6 +52,35 @@ async def ingest_sentinel_report(
     request: Request,
     x_device_token: str | None = Header(default=None),
 ) -> dict[str, Any]:
+    return await _ingest(report, request, x_device_token)
+
+
+@wifi_router.post("/sensor-data", status_code=status.HTTP_202_ACCEPTED)
+async def receive_sensor_data(
+    report: SentinelReport,
+    request: Request,
+    x_device_token: str | None = Header(default=None),
+) -> dict[str, Any]:
+    config = request.app.state.runtime.config
+    if x_device_token is None and not config.sentinel_device_token and config.app_env.lower() == "development":
+        # The Pico's urequests.post() sends no headers. Allowed only in development
+        # with no token configured; set SENTINEL_DEVICE_TOKEN to require one.
+        x_device_token = "dev-sentinel-token"
+    result = await _ingest(report, request, x_device_token)
+    return {"success": True, **result}
+
+
+@wifi_router.get("/sensor-data")
+async def latest_sensor_data(request: Request) -> dict[str, Any]:
+    runtime = request.app.state.runtime
+    device = runtime.devices[runtime.config.sentinel_device_id]
+    return {
+        "device": device,
+        "reading": runtime.latest.get(device["facility_id"]),
+    }
+
+
+async def _ingest(report: SentinelReport, request: Request, x_device_token: str | None) -> dict[str, Any]:
     runtime = request.app.state.runtime
     validate_device_token(runtime.config, report.device_id, x_device_token)
     if report.device_id != runtime.config.sentinel_device_id:
