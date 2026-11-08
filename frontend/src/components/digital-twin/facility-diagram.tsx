@@ -23,11 +23,7 @@ function MapSidebar({ room, selectRoom }: { room: string; selectRoom: (id: strin
     </section>
     <section className="sidebar-section">
       <div className="sidebar-section-heading"><h2>Thermal activity</h2><span className="sidebar-code">15 MIN</span></div>
-<<<<<<< HEAD
-      <div className="sidebar-temperature"><strong>93.4<span> °F</span></strong><span>↘ Falling</span></div>
-=======
       <div className="sidebar-temperature"><strong>{temperature.toFixed(1)}<span> °F</span></strong><span>↘ Falling</span></div>
->>>>>>> 245739c (Last Changes)
       <img className="sidebar-sparkline" src="/figma/temperature.svg" width="842" height="160" alt="Illustrative temperature trend rising then falling after cooling" />
       <div className="distribution-labels"><span>14:20</span><span>14:32</span></div>
     </section>
@@ -42,17 +38,10 @@ function MapSidebar({ room, selectRoom }: { room: string; selectRoom: (id: strin
 }
 
 const roomInfo: Record<string, { title: string; location: string; value: string; unit: string; status: string; response: string; incident?: string }> = {
-<<<<<<< HEAD
-  A: { title: "Rack A-03", location: "Server hall A / sensor T-A03", value: "106.2°", unit: "TEMPERATURE / °F", status: "CRITICAL • RESPONDING", response: "The response is underway.", incident: "1042" },
-  B: { title: "Server hall B", location: "Server hall B / sensor T-B01", value: "79.5°", unit: "TEMPERATURE / °F", status: "NORMAL", response: "All systems normal." },
-  C: { title: "Network room", location: "Network room / sensor T-C01", value: "78.4°", unit: "TEMPERATURE / °F", status: "NORMAL", response: "All systems normal." },
-  D: { title: "Cooling area", location: "Power & cooling / sensor W-D01", value: "Detected", unit: "WATER / MOISTURE", status: "CRITICAL • OPEN", response: "Water inspection required.", incident: "1041" },
-=======
   A: { title: "Desk & Workstation", location: "Desk & workstation / sensor DHT22-01", value: "76.0°", unit: "TEMPERATURE / °F", status: "CRITICAL • RESPONDING", response: "The response is underway.", incident: "1042" },
   B: { title: "Window Side", location: "Window side / sensor DHT22-02", value: "73.0°", unit: "TEMPERATURE / °F", status: "NORMAL", response: "All systems normal." },
   C: { title: "Electronics Shelf", location: "Electronics shelf / sensor DHT22-03", value: "73.2°", unit: "TEMPERATURE / °F", status: "NORMAL", response: "All systems normal." },
   D: { title: "Mini-Fridge Nook", location: "Mini-fridge nook / sensor water-01", value: "Detected", unit: "WATER / MOISTURE", status: "CRITICAL • OPEN", response: "Moisture inspection required.", incident: "1041" },
->>>>>>> 245739c (Last Changes)
 };
 
 const emergencyRooms = Object.fromEntries(Object.entries(roomInfo)
@@ -86,10 +75,6 @@ export default function FacilityDiagram({ initialRoom = "A", compact = false, mo
     </div>
     {monitoring && <div className="workspace-statusbar"><span><i className="map-status-dot" /> 4 monitored corners</span><span>2 active incidents</span><span>Illustrative snapshot</span></div>}
     </div>
-<<<<<<< HEAD
-    <Panel id={monitoring ? "facility-inspector" : undefined} className="inspector">{monitoring && <div className="inspector-eyebrow">SELECTED LOCATION <span>{room}</span></div>}<Status muted>{info.status}</Status><h2 className="inspector-title">{compact && room === "A" ? "Temperature sensor" : info.title}</h2><p>{info.location}</p><div className="inspector-reading"><p className="inspector-value">{compact && room === "A" ? "100.8 °F" : info.value}</p><p className="small unit">{info.unit}</p></div><h3>{info.response}</h3>{room === "A" ? <><p>Fan active • Pico confirmed<br />Vent open / 90° reported</p><p>Recovery verification pending</p></> : <p>{room === "D" ? "Alarm active • inspection pending" : "Readings within normal range"}</p>}{info.incident ? <IncidentLink id={info.incident} /> : <Link className="status status-link" href="/overview">View facility overview →</Link>}</Panel>
-=======
     <Panel id={monitoring ? "facility-inspector" : undefined} className="inspector">{monitoring && <div className="inspector-eyebrow">SELECTED LOCATION <span>{room}</span></div>}<Status muted>{info.status}</Status><h2 className="inspector-title">{compact && room === "A" ? "Temperature sensor" : info.title}</h2><p>{info.location}</p><div className="inspector-reading"><p className="inspector-value">{compact && room === "A" ? `${tempA.toFixed(1)} °F` : liveValue}</p><p className="small unit">{info.unit}</p></div><h3>{info.response}</h3>{room === "A" ? <><p>Fan active • Pico confirmed<br />Speed stepped down to 60%</p><p>Recovery verification pending</p></> : <p>{room === "D" ? "Alarm active • inspection pending" : "Readings within normal range"}</p>}{info.incident ? <IncidentLink id={info.incident} /> : <Link className="status status-link" href="/overview">View room overview →</Link>}</Panel>
->>>>>>> 245739c (Last Changes)
   </div>;
 }

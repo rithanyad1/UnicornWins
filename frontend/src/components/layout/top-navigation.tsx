@@ -15,10 +15,6 @@ export default function TopNavigation() {
     <nav id="primary-nav" aria-label="Main navigation" className={open ? "nav-links is-open" : "nav-links"}>
       {links.map(([href, label]) => <Link key={href} href={href} aria-current={(href === "/" ? pathname === "/" : pathname.startsWith(href)) ? "page" : undefined} onClick={() => setOpen(false)}>{label}</Link>)}
     </nav>
-<<<<<<< HEAD
     <div className="nav-dashboard-status"><span className="unicorn-avatar" aria-label="UN1C0RN^2 workspace">U</span></div>
-=======
-    <div className="nav-dashboard-status"><span className="online-dot"/> Demo workspace <span className="sentinel-avatar" aria-label="UN1C0RN^2 workspace">U</span></div>
->>>>>>> 245739c (Last Changes)
   </header>;
 }
