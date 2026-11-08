@@ -10,6 +10,6 @@ export default function Overview() {
     <SystemOverview />
     <div className="dashboard-main-grid"><EnvironmentalCharts /><AiAnalysis /></div>
     <ActivityFeed />
-    <footer className="dashboard-footer"><span><Icon name="shield"/> SENTINEL <span> / </span> A little magic. Complete visibility.</span><span>Demo data · Hardware states are illustrative</span></footer>
+    <footer className="dashboard-footer"><span><Icon name="shield"/> SENTINEL <span> / </span> A little magic. Complete visibility.</span><span>Live data from the SENTINEL node</span></footer>
   </main>;
 }

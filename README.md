@@ -8,11 +8,12 @@ An Isolation Forest model and an optional Google Gemini agent add analysis on to
 
 | Area | Status |
 |---|---|
-| `backend/` | Implemented. FastAPI service with 28 passing tests. |
+| `backend/` | Implemented. FastAPI service with 46 passing tests. |
 | `spacetimedb/` | Implemented. TypeScript SpacetimeDB module with tables, seed data, and owner-only write reducers. |
-| `frontend/` | Scaffolded only (Next.js file layout; files are empty). |
+| `frontend/` | Implemented. Next.js dashboard showing live backend data over REST and `/ws/live`. |
+| SENTINEL Pico 2 W node | Firmware kept by the hardware team (not in this repo). Its USB serial reports reach the backend through `scripts/serial_bridge.py`. |
 | `firmware/esp32`, `firmware/pico` | Scaffolded only (files are empty). |
-| `scripts/` | Scaffolded only (files are empty). |
+| `scripts/` | `serial_bridge.py` and `start-local.sh` implemented; the rest are empty. |
 | `docs/` | Scaffolded only (files are empty). |
 
 ## Architecture
@@ -93,7 +94,9 @@ backend/
     schemas/             Pydantic request models and enums
   tests/                 pytest suite (in-memory, no external services)
 spacetimedb/             SpacetimeDB module (src/index.ts): tables, seed, reducers
-frontend/, firmware/, scripts/, docs/   Placeholders
+frontend/                Next.js dashboard (live data via src/lib/api.ts and src/hooks/use-live-data.ts)
+scripts/serial_bridge.py USB serial → backend bridge for the SENTINEL node
+firmware/, docs/         Placeholders
 ```
 
 ## Quick start (backend)
@@ -112,11 +115,29 @@ In development, blank tokens fall back to `dev-esp32-token`, `dev-pico-token`, a
 
 [backend/README.md](backend/README.md) covers the full setup: environment variables, SpacetimeDB, Gemini, curl examples for every device flow, and troubleshooting.
 
+## Running with the SENTINEL hardware
+
+The SENTINEL node is a Raspberry Pi Pico 2 W that reads a DS18B20 (temperature), DHT11 (humidity) and MPU6500 (vibration), and drives its own fan, LEDs, buzzer and OLED. Every 3 seconds it prints a JSON report on its USB serial port. Its firmware is used unchanged.
+
+```
+Pico 2 W ── USB serial (JSON lines) ──▶ scripts/serial_bridge.py ── POST /api/v1/hardware/report ──▶ backend ── /ws/live ──▶ dashboard
+```
+
+1. Plug the Pico into the computer that runs the backend, and close Thonny so the serial port is free.
+2. `cd backend && cp .env.example .env`. The example matches the node's thresholds (warning 74 °F, critical 76 °F, humidity 60 %, vibration 0.20 g) and turns the simulator off.
+3. `pip install pyserial`, then run everything with `scripts/start-local.sh`, or start each part yourself:
+   - `cd backend && uvicorn app.main:app --port 8000`
+   - `cd frontend && npm install && npm run dev`
+   - `python3 scripts/serial_bridge.py` (auto-detects the Pico; use `--port COM3` or `--port /dev/ttyACM0` if needed)
+4. Open <http://localhost:3000>.
+
+The backend converts °F to °C, opens and verifies incidents, and records sensor errors. It never queues commands for this node, because the node runs its fan itself and does not poll for commands. The node has no water sensor, so `water_detected` is always false.
+
 ## Authentication
 
 | Header | Used by |
 |---|---|
-| `X-Device-Token` | ESP32 telemetry; Pico heartbeat, command poll, and ack |
+| `X-Device-Token` | ESP32 telemetry; Pico heartbeat, command poll, and ack; SENTINEL node reports (`SENTINEL_DEVICE_TOKEN`, dev fallback `dev-sentinel-token`) |
 | `X-Operator-Key` | Manual commands, mode changes, model training, and simulation triggers |
 
 Read-only `GET` endpoints and `/ws/live` are currently unauthenticated.

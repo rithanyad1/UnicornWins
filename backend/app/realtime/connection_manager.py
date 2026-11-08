@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from fastapi import WebSocket
+from fastapi.encoders import jsonable_encoder
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,8 @@ class ConnectionManager:
             self._clients.discard(websocket)
 
     async def broadcast(self, message: dict) -> None:
+        # Events carry datetimes, which plain json.dumps cannot encode.
+        message = jsonable_encoder(message)
         async with self._lock:
             clients = tuple(self._clients)
         disconnected: list[WebSocket] = []

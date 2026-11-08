@@ -22,6 +22,13 @@ from app.services.safety_rules import SafetyEngine
 from app.services.telemetry import TelemetryService
 
 
+# A node that senses and drives its own actuators locally. The backend records
+# and verifies its incidents but never queues commands for it, because it does
+# not poll for them.
+SENTINEL_NODE = "SENTINEL_NODE"
+SENSOR_DEVICE_TYPES = {"ESP32_SENSOR", "SIMULATED_SENSOR", SENTINEL_NODE}
+
+
 def utc_now() -> datetime:
     return datetime.now(timezone.utc)
 
@@ -60,6 +67,7 @@ class Runtime:
         self.devices: dict[str, dict[str, Any]] = {
             "sentinel-esp32": self._device("sentinel-esp32", "ESP32_SENSOR"),
             "sentinel-pico": self._device("sentinel-pico", "PICO_CONTROLLER"),
+            self.config.sentinel_device_id: self._device(self.config.sentinel_device_id, SENTINEL_NODE),
         }
         if self.config.simulation_enabled:
             simulated = (
@@ -313,10 +321,14 @@ class Runtime:
         await self.persistence.persist_critical("ai_decisions", decision)
         await self.emit("ai.decision", {"facility_id": facility_id, **decision, "reading_id": reading["id"]})
 
+    def _is_self_controlled(self, reading: dict[str, Any]) -> bool:
+        return self.devices.get(reading["device_id"], {}).get("device_type") == SENTINEL_NODE
+
     async def _process_safety(self, reading: dict[str, Any]) -> None:
+        self_controlled = self._is_self_controlled(reading)
         for action in self.safety.evaluate(reading):
             if action.incident_type == "TEMPERATURE_RECOVERED":
-                if not self._is_simulated(reading["facility_id"]):
+                if not self._is_simulated(reading["facility_id"]) and not self_controlled:
                     temperature_incident = next((
                         item for item in reversed(tuple(self.incidents.values()))
                         if item["facility_id"] == reading["facility_id"]
@@ -354,7 +366,10 @@ class Runtime:
                 self.incidents[incident["id"]] = incident
             command = None
             command_created = False
-            if action.command_type and not self._is_simulated(reading["facility_id"]):
+            if self_controlled and reading.get("fan"):
+                # The node has already started its own cooling response.
+                incident["status"] = IncidentStatus.RESPONDING.value
+            if action.command_type and not self._is_simulated(reading["facility_id"]) and not self_controlled:
                 device_id = self._controller_for(reading["facility_id"])
                 command_count = len(self.commands.commands)
                 command = self.commands.create(
@@ -471,7 +486,7 @@ class Runtime:
         sensor_devices = [
             item for item in self.devices.values()
             if item["facility_id"] == facility_id
-            and item["device_type"] in {"ESP32_SENSOR", "SIMULATED_SENSOR"}
+            and item["device_type"] in SENSOR_DEVICE_TYPES
         ]
         if not any(item["status"] == DeviceStatus.CONNECTED.value for item in sensor_devices):
             status = "DISCONNECTED"

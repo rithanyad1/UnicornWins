@@ -9,6 +9,6 @@ export function Heading({ title, subtitle, eyebrow }: { title: string; subtitle:
 export function Status({ children, muted = false }: { children: React.ReactNode; muted?: boolean }) {
   return <div className={`status ${muted ? "status-muted" : ""}`}>{children}</div>;
 }
-export function IncidentLink({ id = "1042", children }: { id?: string; children?: React.ReactNode }) {
+export function IncidentLink({ id, children }: { id: string; children?: React.ReactNode }) {
   return <Link className="status status-link" href={`/incidents/${id}`}>{children ?? `View incident #${id} →`}</Link>;
 }
