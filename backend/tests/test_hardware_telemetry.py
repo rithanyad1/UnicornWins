@@ -133,3 +133,28 @@ async def test_saved_hardware_history_is_restored_after_restart():
         assert list(runtime.hardware_reports) == [report()]
     finally:
         await runtime.close()
+
+
+@pytest.mark.parametrize("temperature,command,expected", [
+    (70, "FAN_ON", 201), (70, "FAN_OFF", 201),
+    (74, "FAN_OFF", 409), (None, "FAN_OFF", 409),
+    (None, "FAN_ON", 201), (70, "VENT_OPEN", 409),
+])
+def test_native_pico_reports_allow_commands_with_local_cooling_protection(temperature, command, expected):
+    with TestClient(create_app(config())) as client:
+        client.post("/api/v1/telemetry/hardware", headers=HEADERS,
+                    json={**report(), "temperature_f": temperature})
+        response = client.post("/api/v1/commands",
+                               headers={"X-Operator-Key": "dev-operator-token"},
+                               json={"device_id": "sentinel-pico", "command_type": command})
+        assert response.status_code == expected
+
+
+def test_native_commands_reject_stale_sensor_state_despite_fresh_heartbeat():
+    with TestClient(create_app(config())) as client:
+        client.post("/api/v1/telemetry/hardware", headers=HEADERS, json=report())
+        client.app.state.runtime.hardware_reports[-1]["recorded_at"] = utc_now() - timedelta(seconds=16)
+        response = client.post("/api/v1/commands",
+                               headers={"X-Operator-Key": "dev-operator-token"},
+                               json={"device_id": "sentinel-pico", "command_type": "FAN_ON"})
+        assert response.status_code == 409

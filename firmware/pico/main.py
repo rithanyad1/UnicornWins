@@ -12,6 +12,14 @@ import network
 
 from wifi_config import WIFI_SSID, WIFI_PASSWORD, BACKEND_URL, DEVICE_TOKEN
 from telemetry_upload import send_report
+from commands import CommandClient
+
+try:
+    from wifi_config import HTTP_TIMEOUT_SECONDS
+except ImportError:
+    HTTP_TIMEOUT_SECONDS = 2
+
+command_client = CommandClient(BACKEND_URL, DEVICE_TOKEN, HTTP_TIMEOUT_SECONDS)
 
 
 # ==========================================
@@ -99,6 +107,7 @@ fan.duty_u16(0)
 
 fan_active = False
 fan_speed = 0
+remote_fan = False
 
 # Buzzer
 buzzer = PWM(Pin(14))
@@ -442,11 +451,32 @@ def update_fan(temp):
     else:
         fan_speed = 0
 
+    if remote_fan:
+        fan_speed = 100
+
     duty = int(fan_speed * 65535 / 100)
 
     fan.duty_u16(duty)
 
     fan_active = fan_speed > 0
+
+
+def execute_command(command):
+    global remote_fan
+    if command.get("parameters"):
+        raise ValueError("This firmware does not support command parameters")
+    kind = command["command_type"]
+    if kind == "FAN_ON":
+        remote_fan = True
+    elif kind == "FAN_OFF":
+        if temperature_f is None or temperature_f >= TEMP_WARNING:
+            raise ValueError("Local protection requires cooling")
+        remote_fan = False
+    else:
+        raise ValueError("Unsupported actuator command: " + kind)
+    update_fan(temperature_f)
+    return {"fan": fan_active, "fan_active": fan_active,
+            "fan_speed_percent": fan_speed}
 
 
 # ==========================================
@@ -705,7 +735,9 @@ try:
 
             # Record the full native report in the backend over Wi-Fi.
             send_report(wifi, payload, BACKEND_URL, DEVICE_TOKEN,
-                        WIFI_SSID, WIFI_PASSWORD)
+                        WIFI_SSID, WIFI_PASSWORD, HTTP_TIMEOUT_SECONDS)
+
+            command_client.poll(wifi, execute_command)
 
             print(
                 "Temperature:",

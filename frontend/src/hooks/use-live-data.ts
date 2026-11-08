@@ -26,6 +26,7 @@ export function useLiveData() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [expiresAt, setExpiresAt] = useState(0);
   const [now, setNow] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let disposed = false;
@@ -34,24 +35,31 @@ export function useLiveData() {
     const clock = setInterval(() => setNow(Date.now()), 1000);
     const poll = async () => {
       controller = new AbortController();
-      const timeout = setTimeout(() => controller?.abort(), 4000);
+      const timeout = setTimeout(() => controller?.abort(), 12000);
       try {
-        const base = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
-        const response = await fetch(`${base}/api/v1/telemetry/hardware?limit=500`, {
+        const response = await fetch("/api/hardware", {
           cache: "no-store", signal: controller.signal,
         });
-        if (!response.ok) throw new Error("Hardware status unavailable");
+        if (!response.ok) {
+          const failure = await response.json().catch(() => ({}));
+          throw new Error(failure.error || "Hardware status unavailable");
+        }
         const data: Snapshot = await response.json();
         const last = data.reports.at(-1);
         const age = last ? Date.parse(data.checked_at) - Date.parse(last.recorded_at) : Infinity;
         const remaining = data.device_timeout_seconds * 1000 - Math.max(0, age);
         if (!disposed) {
           setSnapshot(data);
+          setError(null);
           setNow(Date.now());
           setExpiresAt(Number.isFinite(remaining) ? Date.now() + remaining : 0);
         }
-      } catch {
-        if (!disposed) { setSnapshot(null); setExpiresAt(0); }
+      } catch (failure) {
+        if (!disposed) {
+          setSnapshot(null); setExpiresAt(0);
+          setError(failure instanceof Error && failure.name !== "AbortError"
+            ? failure.message : "Hardware backend request timed out. Retrying…");
+        }
       } finally {
         clearTimeout(timeout);
         if (!disposed) nextPoll = setTimeout(poll, 3000);
@@ -64,6 +72,7 @@ export function useLiveData() {
   const connected = Boolean(snapshot?.connected && now < expiresAt);
   return {
     connected,
+    error,
     report: connected ? snapshot?.reports.at(-1) ?? null : null,
     reports: connected ? snapshot?.reports ?? [] : [],
   };

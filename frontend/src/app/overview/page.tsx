@@ -8,9 +8,10 @@ import ActivityFeed from "@/components/dashboard/activity-feed";
 import Icon from "@/components/dashboard/dashboard-icon";
 
 export default function Overview() {
-  const { report, reports, connected } = useLiveData();
+  const { report, reports, connected, error } = useLiveData();
   return <main id="main" className="page dashboard-page" data-node-id="46:6">
     <h1 className="sr-only">Facility dashboard</h1>
+    {error && <p role="alert">{error}</p>}
     <SystemOverview report={report} />
     <div className="dashboard-main-grid"><EnvironmentalCharts report={report} reports={reports} /><AiAnalysis report={report} /></div>
     <ActivityFeed reports={reports} />

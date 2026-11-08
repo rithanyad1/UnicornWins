@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 
 from app.core.security import authenticated_device_id, require_operator
-from app.schemas.commands import CommandAck, CommandRequest, CommandStatus
+from app.schemas.commands import CommandAck, CommandRequest, CommandType
+from app.services.runtime import _parse_datetime, utc_now
 
 router = APIRouter()
 
@@ -23,9 +24,33 @@ async def create_command(
         raise HTTPException(status_code=409, detail="Commands may only be sent to a control device")
     if runtime.facilities[device["facility_id"]]["is_simulated"]:
         raise HTTPException(status_code=403, detail="Manual hardware commands are disabled for simulated facilities")
-    reason = runtime.safety.validate_operator_command(
-        payload.command_type, payload.parameters, runtime.latest.get(device["facility_id"])
+    latest = runtime.latest.get(device["facility_id"])
+    native = next(
+        (report for report in reversed(runtime.hardware_reports)
+         if report.get("facility_id") == device["facility_id"]),
+        None,
     )
+    if native is not None:
+        recorded_at = _parse_datetime(native.get("recorded_at"))
+        age = (utc_now() - recorded_at).total_seconds() if recorded_at else float("inf")
+        reason = None
+        if not 0 <= age < runtime.config.device_timeout_seconds:
+            reason = "No recent Pico sensor state is available"
+        elif payload.command_type not in {CommandType.FAN_ON, CommandType.FAN_OFF}:
+            reason = "This Pico firmware supports only FAN_ON and FAN_OFF"
+        elif payload.parameters:
+            reason = "This Pico firmware does not support command parameters"
+        elif payload.command_type == CommandType.FAN_OFF and (
+            native["temperature_f"] is None or native["temperature_f"] >= 74
+        ):
+            reason = "Local Pico protection requires cooling at or above 74 F or when temperature is unavailable"
+        # Preserve any additional ESP32 safety constraints when both boards report.
+        if reason is None and latest is not None:
+            reason = runtime.safety.validate_operator_command(payload.command_type, payload.parameters, latest)
+    else:
+        reason = runtime.safety.validate_operator_command(
+            payload.command_type, payload.parameters, latest
+        )
     if reason:
         raise HTTPException(status_code=409, detail={"blocked": True, "reason": reason})
     command_count = len(runtime.commands.commands)

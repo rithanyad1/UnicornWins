@@ -10,10 +10,11 @@ An Isolation Forest model and an optional Google Gemini agent add analysis on to
 |---|---|
 | `backend/` | Implemented. FastAPI service with 28 passing tests. |
 | `spacetimedb/` | Implemented. TypeScript SpacetimeDB module with tables, seed data, and owner-only write reducers. |
-| `frontend/` | Scaffolded only (Next.js file layout; files are empty). |
-| `firmware/esp32`, `firmware/pico` | Scaffolded only (files are empty). |
+| `frontend/` | Next.js dashboard. `/overview` displays live native Pico reports; incident and map screens include illustrative data. |
+| `firmware/pico` | MicroPython sensor monitoring, telemetry uploads, and protected fan command polling. |
+| `firmware/esp32` | Scaffolded; not required for the native Pico dashboard. |
 | `scripts/` | Scaffolded only (files are empty). |
-| `docs/` | Scaffolded only (files are empty). |
+| `docs/` | Includes [deployment setup](docs/deployment.md); some other documents remain placeholders. |
 
 ## Architecture
 

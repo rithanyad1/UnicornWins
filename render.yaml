@@ -1,0 +1,29 @@
+# For the existing API, apply these settings to that service in Render.
+# This file alone does not change an existing service or upload local .env files.
+services:
+  - type: web
+    name: un1c0rn-2
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install .
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 1
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: APP_ENV
+        value: production
+      - key: SIMULATION_ENABLED
+        value: "false"
+      - key: PICO_DEVICE_TOKEN
+        sync: false
+      - key: ESP32_DEVICE_TOKEN
+        sync: false
+      - key: OPERATOR_API_KEY
+        sync: false
+      - key: SPACETIMEDB_URI
+        value: https://maincloud.spacetimedb.com
+      - key: SPACETIMEDB_DATABASE
+        value: unicornwins-5gkbd
+      - key: SPACETIMEDB_TOKEN
+        sync: false
