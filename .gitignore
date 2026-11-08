@@ -1,0 +1,19 @@
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+backend/data/models/*
+!backend/data/models/.gitkeep
+
+# Claude Code
+CLAUDE.md
+
+# SpacetimeDB module build output
+spacetimedb/node_modules/
+spacetimedb/dist/
